@@ -16,7 +16,7 @@ jobs:
       # only testing on Node 18 now but could have done
       # several builds by adding [16.x, 18.x] etc
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x]
 
     steps:
       # action from github marketplace, actions
@@ -33,6 +33,11 @@ jobs:
         # of npm install -> installs all npm modules
         # mentioned in package.json, preferably during CI
       - run: npm ci
+        #install mysql and setup with correct root password
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql root password: Kalimdor91
+          mysql user: "Max"
         # start backend / rest-api-server (without blocket the terminal)
       - run: nohup npm run backend &
         # run whatever is specified in package.json
