@@ -72,6 +72,7 @@ module.exports = class RestApi {
     if (!Acl.checkRoute(req, name, method, isTable, isView)) {
       res.status(403);
       res.json({ error: `Forbidden.` })
+      return;
     }
     // errors - wrong table/view name or wrong request metod
     if (!isTable && !isView) {
