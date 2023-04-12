@@ -17,7 +17,7 @@ jobs:
       # only testing on Node 18 now but could have done
       # several builds by adding [16.x, 18.x] etc
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [18.x]
 
     steps:
       # action from github marketplace, actions
@@ -37,7 +37,7 @@ jobs:
         # start mysql and change default password
         # use the password from your settings.json fil in this repo
       - run: sudo service mysql start
-      - run: mysqladmin --user=Max --password=Kalimdor91 password "rootroot"
+      - run: mysqladmin --user=Max --password=Max password "Kalimdor91"
         # restart mysql
       - run: sudo service mysql restart
         # seed the db with initial dummy/test data
