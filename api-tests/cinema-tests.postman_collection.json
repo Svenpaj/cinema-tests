@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f09ff6b6-5093-453a-b4a7-b6b0e70dfd93",
+		"_postman_id": "3458bbf1-4c1e-4fe5-84ee-6d0569131841",
 		"name": "Cinema-tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24654178"
@@ -169,7 +169,7 @@
 							"});\r",
 							"\r",
 							"pm.test('Expect db values to equal original values for user', () => {\r",
-							"    let userWithoutPassword = {...user, password: null};\r",
+							"    let userWithoutPassword = {...user, password: null, userRole:null};\r",
 							"    let responseWithoutPassword = {...response, password: null};\r",
 							"    pm.expect(userWithoutPassword).to.deep.equal(responseWithoutPassword);\r",
 							"});\r",
