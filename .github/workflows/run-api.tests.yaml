@@ -38,6 +38,8 @@ jobs:
         with:
           mysql root password: Kalimdor91
           mysql user: "Max"
+      - run: service mysql start
+      - run: npm run seed-db
         # start backend / rest-api-server (without blocket the terminal)
       - run: nohup npm run backend &
         # run whatever is specified in package.json
