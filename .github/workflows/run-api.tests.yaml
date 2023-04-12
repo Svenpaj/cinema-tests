@@ -35,7 +35,8 @@ jobs:
       - run: npm ci
         #install mysql and setup with correct root password
       - uses: mirromutth/mysql-action@v1.1
-
+        with:
+          mysql user: "developer"
       - run: sudo service mysql start
       - run: npm run seed-db
         # start backend / rest-api-server (without blocket the terminal)
