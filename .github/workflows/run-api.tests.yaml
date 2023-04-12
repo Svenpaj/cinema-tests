@@ -36,9 +36,9 @@ jobs:
         #install mysql and setup with correct root password
       - uses: mirromutth/mysql-action@v1.1
         with:
-          mysql root password: Kalimdor91
-          mysql user: "Max"
-      - run: service mysql start
+          mysql root password: root
+          mysql user: "root"
+      - run: sudo service mysql start
       - run: npm run seed-db
         # start backend / rest-api-server (without blocket the terminal)
       - run: nohup npm run backend &
