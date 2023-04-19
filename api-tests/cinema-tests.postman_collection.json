@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3458bbf1-4c1e-4fe5-84ee-6d0569131841",
+		"_postman_id": "f09ff6b6-5093-453a-b4a7-b6b0e70dfd93",
 		"name": "Cinema-tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24654178"
@@ -19,35 +19,40 @@
 							"  \"password\": \"B1v3HKs1zZ6\",\r",
 							"  \"firstName\": \"Teddy\",\r",
 							"  \"lastName\": \"Litchfield\",\r",
-							"  \"phoneNumber\": \"982-298-8510\"\r",
+							"  \"phoneNumber\": \"982-298-8510\",\r",
+							"  \"userRole\": \"null\"\r",
 							"}, \r",
 							"{\r",
 							"  \"email\": \"gpretor1@prweb.com\",\r",
 							"  \"password\": \"3VlkCwHkh\",\r",
 							"  \"firstName\": \"Garvy\",\r",
 							"  \"lastName\": \"Pretor\",\r",
-							"  \"phoneNumber\": \"419-924-9946\"\r",
+							"  \"phoneNumber\": \"419-924-9946\",\r",
+							"  \"userRole\": \"null\"\r",
 							"}, \r",
 							"{\r",
 							"  \"email\": \"mtourle2@infoseek.co.jp\",\r",
 							"  \"password\": \"PwgltZBsB\",\r",
 							"  \"firstName\": \"Marcie\",\r",
 							"  \"lastName\": \"Tourle\",\r",
-							"  \"phoneNumber\": \"113-847-4407\"\r",
+							"  \"phoneNumber\": \"113-847-4407\",\r",
+							"  \"userRole\": \"null\"\r",
 							"}, \r",
 							"{\r",
 							"  \"email\": \"pgauche3@smugmug.com\",\r",
 							"  \"password\": \"NOCQwPeAHwc\",\r",
 							"  \"firstName\": \"Petr\",\r",
 							"  \"lastName\": \"Gauche\",\r",
-							"  \"phoneNumber\": \"487-255-1079\"\r",
+							"  \"phoneNumber\": \"487-255-1079\",\r",
+							"  \"userRole\": \"null\"\r",
 							"}, \r",
 							"{\r",
 							"  \"email\": \"sraysdale4@constantcontact.com\",\r",
 							"  \"password\": \"xldgu31x\",\r",
 							"  \"firstName\": \"Susy\",\r",
 							"  \"lastName\": \"Raysdale\",\r",
-							"  \"phoneNumber\": \"625-143-6566\"\r",
+							"  \"phoneNumber\": \"625-143-6566\",\r",
+							"  \"userRole\": \"null\"\r",
 							"}]\r",
 							"\r",
 							"if(!pm.environment.get('mockData')) {\r",
@@ -115,7 +120,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"phoneNumber\": \"{{phoneNumber}}\"\r\n}",
+					"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"phoneNumber\": \"{{phoneNumber}}\",\r\n  \"userRole\": \"{{userRole}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -169,8 +174,9 @@
 							"});\r",
 							"\r",
 							"pm.test('Expect db values to equal original values for user', () => {\r",
-							"    let userWithoutPassword = {...user, password: null, userRole:null};\r",
+							"    let userWithoutPassword = {...user, password: null};\r",
 							"    let responseWithoutPassword = {...response, password: null};\r",
+							"    console.log(userWithoutPassword, responseWithoutPassword);\r",
 							"    pm.expect(userWithoutPassword).to.deep.equal(responseWithoutPassword);\r",
 							"});\r",
 							"\r",
@@ -182,6 +188,161 @@
 							"else {\r",
 							"    pm.environment.set('userIndex', userIndex);\r",
 							"    postman.setNextRequest('Read users');\r",
+							"};\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4000/api/users/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let mockData = JSON.parse(pm.environment.get('mockData'));\r",
+							"let userIndex = +pm.environment.get('userIndex');\r",
+							"let user = mockData[userIndex];\r",
+							"\r",
+							"user.firstName = \"This is another another firstname\";\r",
+							"user.lastName = \"This is another lastname\";\r",
+							"mockData[userIndex] = user;\r",
+							"pm.environment.set('mockData', JSON.stringify(mockData));\r",
+							"pm.environment.set('id', user.id);\r",
+							"\r",
+							"for(let [key,val] of Object.entries(user)) {\r",
+							"    pm.environment.set(key, val);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let res = pm.response.json();\r",
+							"let mockData = JSON.parse(pm.environment.get('mockData'));\r",
+							"\r",
+							"let userIndex = +pm.environment.get('userIndex');\r",
+							"let user = mockData[userIndex];\r",
+							"\r",
+							"pm.test('Expect status code 200', () => {\r",
+							"    pm.expect(pm.response.code).to.equal(200)\r",
+							"});\r",
+							"\r",
+							"userIndex++\r",
+							"if(!mockData[userIndex]) {\r",
+							"    pm.environment.set('userIndex', 0)\r",
+							"}\r",
+							"else {\r",
+							"    pm.environment.set('userIndex', userIndex)\r",
+							"    postman.setNextRequest('Update users')\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"{{email}}\",\r\n  \"password\": \"{{password}}\",\r\n  \"firstName\": \"{{firstName}}\",\r\n  \"lastName\": \"{{lastName}}\",\r\n  \"phoneNumber\": \"{{phoneNumber}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/api/users/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read updated users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let mockData = JSON.parse(pm.environment.get('mockData'));\r",
+							"let userIndex = +pm.environment.get('userIndex');\r",
+							"\r",
+							"let user = mockData[userIndex];\r",
+							"\r",
+							"pm.environment.set('id', user.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let mockData = JSON.parse(pm.environment.get('mockData'));\r",
+							"let userIndex = +pm.environment.get('userIndex');\r",
+							"let user = mockData[userIndex];\r",
+							"\r",
+							"let response = pm.response.json();\r",
+							"\r",
+							"pm.test('expect status code 200', () => {\r",
+							"    pm.expect(pm.response.code).to.be.equal(200);\r",
+							"});\r",
+							"\r",
+							"pm.test('Expect db values to equal original values for user', () => {\r",
+							"    let userWithoutPassword = {...user, password: null};\r",
+							"    let responseWithoutPassword = {...response, password: null};\r",
+							"    console.log(userWithoutPassword, responseWithoutPassword);\r",
+							"    pm.expect(userWithoutPassword).to.deep.equal(responseWithoutPassword);\r",
+							"});\r",
+							"\r",
+							"userIndex++;\r",
+							"\r",
+							"if(!mockData[userIndex]) {\r",
+							"    pm.environment.set('userIndex', '0');\r",
+							"}\r",
+							"else {\r",
+							"    pm.environment.set('userIndex', userIndex);\r",
+							"    postman.setNextRequest('Read updated users');\r",
 							"};\r",
 							"\r",
 							"\r",

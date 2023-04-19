@@ -5,7 +5,7 @@ module.exports = class Acl {
 
   // req.sesssion.user -> logged in user if any
 
-  static checkRoute(req, table, method, isTable, isView) {
+  static checkRoute(req, table, method, isTable, isView) {  return true;
     let role = req.session.user ? (req.session.user.userRole || ' logged in') : ' not logged in';
     
     
@@ -16,7 +16,6 @@ module.exports = class Acl {
       'method: ' + method,
     ].join('/n'));
 
-    return true;
 
     if (role === ' not logged in' && table === 'users' && method !== 'GET') {
       return true;
